@@ -55,11 +55,10 @@ El login guarda el JWT en `localStorage`. La conexión Socket.IO envía el token
 
 ## Decisiones y trade-offs
 
-- Socket.IO permite comunicación bidireccional y reconexión sencilla.
-- MySQL conserva el historial y ordena los mensajes por `created_at` e `id`.
-- `message_uuid` generado como UUID v4 en el cliente y una restricción `UNIQUE` evitan duplicados tras reintentos.
-- El MVP usa credenciales demo y un destinatario fijo por rol; la selección de conversaciones queda para una iteración posterior.
-- El JWT se almacena en `localStorage` para simplificar el flujo de desarrollo local. En producción debe revisarse la estrategia de almacenamiento y rotación de tokens.
+- **Problema clásico de mensajes duplicados por reintentos de red:** En los chats en tiempo real, si el cliente pierde conectividad al enviar un mensaje, los mecanismos de reintento automático pueden duplicar los registros en el servidor. *Solución elegida:* Se implementó un `message_uuid` (generado como UUID v4 en el cliente) junto con una restricción `UNIQUE` en MySQL para garantizar la idempotencia y bloquear mensajes repetidos de forma nativa.
+- **Comunicación en Tiempo Real:** Se seleccionó **Socket.IO** en lugar de consultas HTTP periódicas (*polling*) por su eficiencia en canales bidireccionales persistentes y su manejo robusto de reconexiones automáticas.
+- **Persistencia de Historial:** Se utilizó **MySQL** para mantener la consistencia relacional de las conversaciones y ordenar los mensajes cronológicamente mediante `created_at` combinando el índice de `id`.
+- **Alcance del MVP y Seguridad:** Se priorizó el uso de tokens JWT en `localStorage` para agilizar la integración del flujo de prueba entre cliente y agente. Como *trade-off* documentado, se señala que en un entorno de producción real se debe migrar a cookies seguras de tipo `HttpOnly`.
 
 ## Estructura
 

@@ -1,0 +1,28 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: min(100%, 420px);
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(25, 118, 210, 0.12);
+}
+
+.brand {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1976d2;
+}
+
+.subtitle {
+  color: #5e6c84;
+  margin-top: 6px;
+}
+
+.full-width {
+  width: 100%;
+}
